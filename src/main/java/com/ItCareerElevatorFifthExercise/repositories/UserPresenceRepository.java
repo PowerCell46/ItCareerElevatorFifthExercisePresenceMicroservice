@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface UserPresenceRepository extends MongoRepository<UserPresence, String> {
 
     UserPresence findByUserId(String userId);
+
+    long deleteByUserId(String userId);
 }

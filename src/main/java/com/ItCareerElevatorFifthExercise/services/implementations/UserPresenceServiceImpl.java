@@ -1,6 +1,7 @@
 package com.ItCareerElevatorFifthExercise.services.implementations;
 
 import com.ItCareerElevatorFifthExercise.DTOs.AddUserPresenceRequestDTO;
+import com.ItCareerElevatorFifthExercise.DTOs.RemoveUserPresenceRequestDTO;
 import com.ItCareerElevatorFifthExercise.entities.UserPresence;
 import com.ItCareerElevatorFifthExercise.repositories.UserPresenceRepository;
 import com.ItCareerElevatorFifthExercise.services.interfaces.UserPresenceService;
@@ -19,6 +20,18 @@ public class UserPresenceServiceImpl implements UserPresenceService {
     public void addUserWebSocketConnectionServerInstanceAddress(AddUserPresenceRequestDTO requestDTO) {
         UserPresence userPresence = new UserPresence(requestDTO.getUserId(), requestDTO.getServerInstanceAddress());
         save(userPresence);
+    }
+
+    @Override
+    public void removeUserWebSocketConnectionServerInstanceAddress(RemoveUserPresenceRequestDTO requestDTO) {
+        long removedEntries = userPresenceRepository.deleteByUserId(requestDTO.getUserId());
+
+        if (removedEntries == 0) {
+            // throw exception and handle it after
+            return;
+        }
+
+        log.info("Successfully removed userPresence for user with id {}.", requestDTO.getUserId());
     }
 
     @Override
