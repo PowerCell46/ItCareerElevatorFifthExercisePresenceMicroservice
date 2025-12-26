@@ -27,10 +27,10 @@ public class UserPresence {
 
     private String userId;
 
-    private String serverInstance;
+    private String serverInstanceAddress;
 
-    public UserPresence(String userId, String serverInstance) {
+    public UserPresence(String userId, String serverInstanceAddress) {
         this.userId = userId;
-        this.serverInstance = serverInstance;
+        this.serverInstanceAddress = serverInstanceAddress;
     }
 }

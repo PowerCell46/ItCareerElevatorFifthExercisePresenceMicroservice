@@ -1,5 +1,6 @@
 package com.ItCareerElevatorFifthExercise.services.implementations;
 
+import com.ItCareerElevatorFifthExercise.DTOs.AddUserPresenceRequestDTO;
 import com.ItCareerElevatorFifthExercise.entities.UserPresence;
 import com.ItCareerElevatorFifthExercise.repositories.UserPresenceRepository;
 import com.ItCareerElevatorFifthExercise.services.interfaces.UserPresenceService;
@@ -15,8 +16,14 @@ public class UserPresenceServiceImpl implements UserPresenceService {
     private final UserPresenceRepository userPresenceRepository;
 
     @Override
+    public void addUserWebSocketConnectionServerInstanceAddress(AddUserPresenceRequestDTO requestDTO) {
+        UserPresence userPresence = new UserPresence(requestDTO.getUserId(), requestDTO.getServerInstanceAddress());
+        save(userPresence);
+    }
+
+    @Override
     public UserPresence save(UserPresence userPresence) {
-        log.info("Saving presence for user {}.", userPresence.getUserId());
+        log.info("Saving presence for user with id {}.", userPresence.getUserId());
 
         return userPresenceRepository.save(userPresence);
     }
