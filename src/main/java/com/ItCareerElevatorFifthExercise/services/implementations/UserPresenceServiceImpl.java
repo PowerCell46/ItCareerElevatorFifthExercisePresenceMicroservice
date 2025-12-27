@@ -1,6 +1,7 @@
 package com.ItCareerElevatorFifthExercise.services.implementations;
 
 import com.ItCareerElevatorFifthExercise.DTOs.AddUserPresenceRequestDTO;
+import com.ItCareerElevatorFifthExercise.DTOs.GetUserPresenceResponseDTO;
 import com.ItCareerElevatorFifthExercise.DTOs.RemoveUserPresenceRequestDTO;
 import com.ItCareerElevatorFifthExercise.entities.UserPresence;
 import com.ItCareerElevatorFifthExercise.repositories.UserPresenceRepository;
@@ -8,6 +9,8 @@ import com.ItCareerElevatorFifthExercise.services.interfaces.UserPresenceService
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -32,6 +35,15 @@ public class UserPresenceServiceImpl implements UserPresenceService {
         }
 
         log.info("Successfully removed userPresence for user with id {}.", requestDTO.getUserId());
+    }
+
+    @Override
+    public GetUserPresenceResponseDTO getUserPresenceAddress(String userId) {
+        Optional<UserPresence> optionalUserPresence = userPresenceRepository.findByUserId(userId);
+        if (optionalUserPresence.isPresent()) {
+            return new GetUserPresenceResponseDTO(optionalUserPresence.get().getServerInstanceAddress(), null);
+        }
+         return null; // probably you have to return the email of the user
     }
 
     @Override

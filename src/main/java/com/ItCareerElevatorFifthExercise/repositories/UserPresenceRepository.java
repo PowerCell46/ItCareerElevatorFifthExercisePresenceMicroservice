@@ -4,10 +4,12 @@ import com.ItCareerElevatorFifthExercise.entities.UserPresence;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface UserPresenceRepository extends MongoRepository<UserPresence, String> {
 
-    UserPresence findByUserId(String userId);
+    Optional<UserPresence> findByUserId(String userId);
 
     long deleteByUserId(String userId);
 }
