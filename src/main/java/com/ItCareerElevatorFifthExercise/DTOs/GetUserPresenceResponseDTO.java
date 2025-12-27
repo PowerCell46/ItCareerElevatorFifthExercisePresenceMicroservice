@@ -9,7 +9,9 @@ import lombok.Setter;
 @AllArgsConstructor
 public class GetUserPresenceResponseDTO {
 
+    private String userEmail;
+
     private String serverInstanceAddress;
 
-    private String userEmail;
+    private String sessionId;
 }

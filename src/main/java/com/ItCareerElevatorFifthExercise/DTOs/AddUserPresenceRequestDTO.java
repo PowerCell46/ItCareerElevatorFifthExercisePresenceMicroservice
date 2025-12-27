@@ -12,4 +12,6 @@ public class AddUserPresenceRequestDTO {
     private String userId;
 
     private String serverInstanceAddress;
+
+    private String sessionId;
 }

@@ -21,7 +21,12 @@ public class UserPresenceServiceImpl implements UserPresenceService {
 
     @Override
     public void addUserWebSocketConnectionServerInstanceAddress(AddUserPresenceRequestDTO requestDTO) {
-        UserPresence userPresence = new UserPresence(requestDTO.getUserId(), requestDTO.getServerInstanceAddress());
+        UserPresence userPresence = new UserPresence(
+                requestDTO.getUserId(),
+                requestDTO.getServerInstanceAddress(),
+                requestDTO.getSessionId()
+        );
+
         save(userPresence);
     }
 
@@ -41,8 +46,13 @@ public class UserPresenceServiceImpl implements UserPresenceService {
     public GetUserPresenceResponseDTO getUserPresenceAddress(String userId) {
         Optional<UserPresence> optionalUserPresence = userPresenceRepository.findByUserId(userId);
         if (optionalUserPresence.isPresent()) {
-            return new GetUserPresenceResponseDTO(optionalUserPresence.get().getServerInstanceAddress(), null);
+            return new GetUserPresenceResponseDTO(
+                    null,
+                    optionalUserPresence.get().getServerInstanceAddress(),
+                    optionalUserPresence.get().getSessionId()
+            );
         }
+
          return null; // probably you have to return the email of the user
     }
 

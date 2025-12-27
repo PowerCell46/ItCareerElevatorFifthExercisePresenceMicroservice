@@ -29,8 +29,11 @@ public class UserPresence {
 
     private String serverInstanceAddress;
 
-    public UserPresence(String userId, String serverInstanceAddress) {
+    private String sessionId;
+
+    public UserPresence(String userId, String serverInstanceAddress, String sessionId) {
         this.userId = userId;
         this.serverInstanceAddress = serverInstanceAddress;
+        this.sessionId = sessionId;
     }
 }

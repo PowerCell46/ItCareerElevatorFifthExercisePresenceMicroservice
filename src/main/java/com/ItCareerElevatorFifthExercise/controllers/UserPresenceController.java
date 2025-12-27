@@ -25,7 +25,7 @@ public class UserPresenceController {
 
     @GetMapping("/{userId}")
     public ResponseEntity<GetUserPresenceResponseDTO> getUserPresence(@PathVariable String userId) {
-        log.info("---> GET request on api/userPresence for user with id: {}.", userId);
+        log.info("---> GET request on api/userPresence/{}.", userId);
 
         GetUserPresenceResponseDTO responseDTO = userPresenceService.getUserPresenceAddress(userId);
 
