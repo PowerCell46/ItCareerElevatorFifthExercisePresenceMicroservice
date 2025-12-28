@@ -1,9 +1,11 @@
 package com.ItCareerElevatorFifthExercise.services.implementations;
 
-import com.ItCareerElevatorFifthExercise.DTOs.AddUserPresenceRequestDTO;
-import com.ItCareerElevatorFifthExercise.DTOs.GetUserPresenceResponseDTO;
-import com.ItCareerElevatorFifthExercise.DTOs.RemoveUserPresenceRequestDTO;
+import com.ItCareerElevatorFifthExercise.DTOs.request.AddUserPresenceRequestDTO;
+import com.ItCareerElevatorFifthExercise.DTOs.response.CreateUserPresenceResponseDTO;
+import com.ItCareerElevatorFifthExercise.DTOs.response.FetchUserPresenceResponseDTO;
+import com.ItCareerElevatorFifthExercise.DTOs.request.RemoveUserPresenceRequestDTO;
 import com.ItCareerElevatorFifthExercise.entities.UserPresence;
+import com.ItCareerElevatorFifthExercise.exceptions.NoSuchUserPresenceException;
 import com.ItCareerElevatorFifthExercise.repositories.UserPresenceRepository;
 import com.ItCareerElevatorFifthExercise.services.interfaces.UserPresenceService;
 import lombok.RequiredArgsConstructor;
@@ -20,14 +22,15 @@ public class UserPresenceServiceImpl implements UserPresenceService {
     private final UserPresenceRepository userPresenceRepository;
 
     @Override
-    public void addUserWebSocketConnectionServerInstanceAddress(AddUserPresenceRequestDTO requestDTO) {
+    public CreateUserPresenceResponseDTO addUserWebSocketConnectionServerInstanceAddress(AddUserPresenceRequestDTO requestDTO) {
         UserPresence userPresence = new UserPresence(
                 requestDTO.getUserId(),
                 requestDTO.getServerInstanceAddress(),
                 requestDTO.getSessionId()
         );
+        userPresence = save(userPresence);
 
-        save(userPresence);
+        return new CreateUserPresenceResponseDTO(userPresence.getUserId());
     }
 
     @Override
@@ -35,30 +38,32 @@ public class UserPresenceServiceImpl implements UserPresenceService {
         long removedEntries = userPresenceRepository.deleteByUserId(requestDTO.getUserId());
 
         if (removedEntries == 0) {
-            // throw exception and handle it after
-            return;
+            throw new NoSuchUserPresenceException(
+                    String.format("No userPresence found with userId %s.", requestDTO.getUserId())
+            );
         }
 
         log.info("Successfully removed userPresence for user with id {}.", requestDTO.getUserId());
     }
 
     @Override
-    public GetUserPresenceResponseDTO getUserPresenceAddress(String userId) {
+    public FetchUserPresenceResponseDTO getUserPresenceAddress(String userId) {
         Optional<UserPresence> optionalUserPresence = userPresenceRepository.findByUserId(userId);
+
         if (optionalUserPresence.isPresent()) {
-            return new GetUserPresenceResponseDTO(
+            return new FetchUserPresenceResponseDTO(
                     null,
                     optionalUserPresence.get().getServerInstanceAddress(),
                     optionalUserPresence.get().getSessionId()
             );
         }
 
-         return null; // probably you have to return the email of the user
+        return null; // TODO: return FetchUserPresenceResponseDTO with email, and null values for the other two props
     }
 
     @Override
     public UserPresence save(UserPresence userPresence) {
-        log.info("Saving presence for user with id {}.", userPresence.getUserId());
+        log.info("Saving userPresence for user with id {}.", userPresence.getUserId());
 
         return userPresenceRepository.save(userPresence);
     }

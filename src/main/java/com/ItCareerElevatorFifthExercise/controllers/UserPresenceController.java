@@ -1,8 +1,9 @@
 package com.ItCareerElevatorFifthExercise.controllers;
 
-import com.ItCareerElevatorFifthExercise.DTOs.AddUserPresenceRequestDTO;
-import com.ItCareerElevatorFifthExercise.DTOs.GetUserPresenceResponseDTO;
-import com.ItCareerElevatorFifthExercise.DTOs.RemoveUserPresenceRequestDTO;
+import com.ItCareerElevatorFifthExercise.DTOs.request.AddUserPresenceRequestDTO;
+import com.ItCareerElevatorFifthExercise.DTOs.response.CreateUserPresenceResponseDTO;
+import com.ItCareerElevatorFifthExercise.DTOs.response.FetchUserPresenceResponseDTO;
+import com.ItCareerElevatorFifthExercise.DTOs.request.RemoveUserPresenceRequestDTO;
 import com.ItCareerElevatorFifthExercise.services.interfaces.UserPresenceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,21 +25,21 @@ public class UserPresenceController {
     private final UserPresenceService userPresenceService;
 
     @GetMapping("/{userId}")
-    public ResponseEntity<GetUserPresenceResponseDTO> getUserPresence(@PathVariable String userId) {
+    public ResponseEntity<FetchUserPresenceResponseDTO> getUserPresence(@PathVariable String userId) {
         log.info("---> GET request on api/userPresence/{}.", userId);
 
-        GetUserPresenceResponseDTO responseDTO = userPresenceService.getUserPresenceAddress(userId);
+        var responseDTO = userPresenceService.getUserPresenceAddress(userId);
 
         return ResponseEntity.ok(responseDTO);
     }
 
     @PostMapping
-    public ResponseEntity<String> addUserPresence(@RequestBody AddUserPresenceRequestDTO requestDTO) {
+    public ResponseEntity<CreateUserPresenceResponseDTO> addUserPresence(@RequestBody AddUserPresenceRequestDTO requestDTO) {
         log.info("---> POST request on api/userPresence for user with id: {}.", requestDTO.getUserId());
 
-        userPresenceService.addUserWebSocketConnectionServerInstanceAddress(requestDTO);
+        var responseDTO = userPresenceService.addUserWebSocketConnectionServerInstanceAddress(requestDTO);
 
-        return ResponseEntity.created(null).body("Success"); // TODO: Change return type
+        return ResponseEntity.created(null).body(responseDTO); // TODO: URL
     }
 
     @DeleteMapping
@@ -47,6 +48,8 @@ public class UserPresenceController {
 
         userPresenceService.removeUserWebSocketConnectionServerInstanceAddress(requestDTO);
 
-        return ResponseEntity.ok("Success");
+        return ResponseEntity.ok(
+                String.format("Successful removal of userPresence for user with id %s.", requestDTO.getUserId())
+        );
     }
 }

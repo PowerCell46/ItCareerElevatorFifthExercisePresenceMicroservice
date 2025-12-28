@@ -17,15 +17,13 @@ import java.time.Instant;
 public class UserPresence {
 
     @Id
-    private String id;
+    private String userId;
 
     @CreatedDate
     private Instant createdAt;
 
     @LastModifiedDate
     private Instant lastModifiedAt;
-
-    private String userId;
 
     private String serverInstanceAddress;
 
