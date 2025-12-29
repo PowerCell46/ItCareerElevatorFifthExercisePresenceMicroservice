@@ -50,15 +50,15 @@ public class UserPresenceServiceImpl implements UserPresenceService {
     public FetchUserPresenceResponseDTO getUserPresenceAddress(String userId) {
         Optional<UserPresence> optionalUserPresence = userPresenceRepository.findByUserId(userId);
 
-        if (optionalUserPresence.isPresent()) {
-            return new FetchUserPresenceResponseDTO(
-                    null,
-                    optionalUserPresence.get().getServerInstanceAddress(),
-                    optionalUserPresence.get().getSessionId()
-            );
-        }
-
-        return null; // TODO: return FetchUserPresenceResponseDTO with email, and null values for the other two props
+        return optionalUserPresence
+                .map(userPresence -> new FetchUserPresenceResponseDTO(
+                        userPresence.getServerInstanceAddress(),
+                        userPresence.getSessionId()
+                ))
+                .orElseGet(() -> new FetchUserPresenceResponseDTO(
+                        null,
+                        null)
+                );
     }
 
     @Override
