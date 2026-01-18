@@ -9,5 +9,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CreateUserPresenceResponseDTO {
 
-    String userId;
+    private String userId;
 }

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ExceptionHandlerController {
 
     @ExceptionHandler(NoSuchUserPresenceException.class)
-    public ResponseEntity<ErrorResponseDTO> handleUserAlreadyExistsException(NoSuchUserPresenceException ex) {
+    public ResponseEntity<ErrorResponseDTO> handleNoSuchUserPresenceException(NoSuchUserPresenceException ex) {
         log.warn("Handling NoSuchUserPresenceException.");
 
         ErrorResponseDTO error = new ErrorResponseDTO(
