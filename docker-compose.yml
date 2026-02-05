@@ -25,7 +25,7 @@ services:
       - "8084:8084"
     environment:
       # Override application.properties for container networking
-      SPRING_MONGO_DB_URI: mongodb://mongo_db:27017/presence_db
+      SPRING_DATA_MONGODB_URI: mongodb://mongo_db:27017/presence_db
     depends_on:
       mongo_db:
         condition: service_healthy
